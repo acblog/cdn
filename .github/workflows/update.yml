@@ -1,0 +1,32 @@
+name: Update
+
+on:
+  push:
+  repository_dispatch:
+
+defaults:
+  run:
+    shell: pwsh
+
+jobs:
+  update:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v2
+        with:
+          persist-credentials: false
+      - name: Generate CDN data
+        env:
+          TOKEN: ${{ secrets.PUSH_TOKEN }}
+          USERNAME: 'StardustDL'
+        run: |
+          pwsh -c ./client.ps1 ./dist
+          pwsh -c ./extensions.ps1 ./dist
+          pwsh -c ./uicomponents.ps1 ./dist
+      - name: Deploy
+        uses: JamesIves/github-pages-deploy-action@releases/v3
+        with:
+          ACCESS_TOKEN: ${{ secrets.PUSH_TOKEN }}
+          BRANCH: cdn
+          FOLDER: dist
