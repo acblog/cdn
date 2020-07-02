@@ -9,14 +9,20 @@ Write-Information "Generate CDN for UI Components"
 $temp = "temp"
 $dist = $args[0]
 
+$latestDist = Join-Path $dist "latest"
+$versionDist = Join-Path $dist "versions"
+
 if (-not (Test-Path -Path $temp)) {
     New-Item -Path $temp -ItemType Directory
 }
-if (-not (Test-Path -Path $dist)) {
-    New-Item -Path $dist -ItemType Directory
+if (-not (Test-Path -Path $latestDist)) {
+    New-Item -Path $latestDist -ItemType Directory
+}
+if (-not (Test-Path -Path $versionDist)) {
+    New-Item -Path $versionDist -ItemType Directory
 }
 
-$token = $env:TOKEN |ConvertTo-SecureString -AsPlainText -Force
+$token = $env:TOKEN | ConvertTo-SecureString -AsPlainText -Force
 
 $cred = New-Object System.Management.Automation.PsCredential($env:USERNAME , $token)
 
@@ -54,12 +60,23 @@ function GenWithPkg {
 
     Expand-Archive $temp/package.zip -DestinationPath $outpath -Force
 
-    $distpkg = Join-Path $dist $name
+    $info = [xml](Get-Content (Join-Path $outpath ($name + ".nuspec")))
+    $version = $info.package.metadata.version
+
+    $distpkg = Join-Path $latestDist $name
     if (Test-Path $outpath/staticwebassets) {
         Copy-Item $outpath/staticwebassets $distpkg/lib -Recurse -Force -Container:$false
     }
     if (Test-Path $outpath/lib/netstandard2.1) {
         Copy-Item $outpath/lib/netstandard2.1 $distpkg/bin -Recurse -Force -Container:$false
+    }
+
+    $distpkgVersion = Join-Path $versionDist $name $version
+    if (Test-Path $outpath/staticwebassets) {
+        Copy-Item $outpath/staticwebassets $distpkgVersion/lib -Recurse -Force -Container:$false
+    }
+    if (Test-Path $outpath/lib/netstandard2.1) {
+        Copy-Item $outpath/lib/netstandard2.1 $distpkgVersion/bin -Recurse -Force -Container:$false
     }
 }
 

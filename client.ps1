@@ -16,7 +16,7 @@ if (-not (Test-Path -Path $dist)) {
     New-Item -Path $dist -ItemType Directory
 }
 
-$token = $env:TOKEN |ConvertTo-SecureString -AsPlainText -Force
+$token = $env:TOKEN | ConvertTo-SecureString -AsPlainText -Force
 
 $cred = New-Object System.Management.Automation.PsCredential($env:USERNAME , $token)
 
