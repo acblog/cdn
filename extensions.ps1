@@ -63,4 +63,4 @@ function GenWithPkg {
     }
 }
 
-GenWithPkg "AcBlog.Extensions.Core"
+# GenWithPkg "AcBlog.Extensions.Core"
