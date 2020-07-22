@@ -82,10 +82,10 @@ function GenWithPkg {
 
 GenWithPkg "AcBlog.UI.Components.Core"
 GenWithPkg "AcBlog.UI.Components.Loading"
-GenWithPkg "AcBlog.UI.Components.Markdown"
+# GenWithPkg "AcBlog.UI.Components.Markdown"
 # GenWithPkg "AcBlog.UI.Components.Modal"
 # GenWithPkg "AcBlog.UI.Components.Toast"
 GenWithPkg "AcBlog.UI.Components.Slides"
 # GenWithPkg "AcBlog.UI.Components.Bootstrap"
-GenWithPkg "AcBlog.UI.Components.AntDesigns"
+# GenWithPkg "AcBlog.UI.Components.AntDesigns"
 GenWithPkg "AcBlog.Extensions.Core"
